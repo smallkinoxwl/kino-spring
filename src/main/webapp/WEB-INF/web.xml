@@ -6,15 +6,23 @@
     xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"  
     id="WebApp_ID"   
     version="3.0">  
+    <!-- 应用上下文配置文件 -->  
     <context-param>  
         <param-name>contextConfigLocation</param-name>  
-        <!-- 应用上下文配置文件 -->  
         <param-value>classpath:/config/spring/spring.xml</param-value>  
     </context-param>  
+    <!-- 日志 -->
+	<context-param>  
+        <param-name>log4jConfigLocation</param-name>  
+        <param-value>classpath:/config/log4j2.xml/log4j2.xml</param-value>  
+    </context-param>
     <!-- 监听启动web容器 自动装配spring -->
     <listener>  
         <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>  
     </listener>  
+    <listener>
+		<listener-class>org.springframework.web.util.Log4jConfigListener</listener-class>
+	</listener>
     <!-- 配置spring核心servlet -->  
     <servlet>  
         <servlet-name>kino-spring-test</servlet-name>  
