@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="kino.spring.test.dao.WorkmanMapper">
+
+<!-- 查询工人基本信息 -->
+	<select id="getWorkmanInfo" resultType="java.util.Map">
+		SELECT workman.phone,`name`, head_img,trade,er.theme
+		FROM workman 
+		JOIN `essay_relation` er ON (er.phone=workman.phone)
+		WHERE user_type=1
+	</select>
+	
+<!-- 指定工人帖子对应得图片 -->
+	<select id="getWorkmanImgs" parameterType="java.util.List" resultType="java.util.Map">
+		SELECT w.phone,e.img,e.content
+		FROM workman AS w
+		JOIN  essay_relation AS er ON (er.phone=w.phone)
+		JOIN  essay AS e ON (e.essay_relation_id=er.id)
+		WHERE user_type=1 and w.phone in 
+		 <foreach collection="phoneList" item="phone" index="index" open="(" separator="," close=")">
+		 		#{phone}
+		 </foreach>
+
+	</select>
+	
+</mapper>

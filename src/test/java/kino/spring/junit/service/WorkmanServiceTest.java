@@ -1,4 +1,7 @@
-package kino.spring.junit.user;
+package kino.spring.junit.service;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -8,7 +11,9 @@ import com.alibaba.fastjson.JSON;
 
 import kino.spring.junit.common.TestAbstractJunit;
 import kino.spring.test.dao.UserMapper;
+import kino.spring.test.dao.WorkmanMapper;
 import kino.spring.test.model.User;
+import kino.spring.test.mvc.service.impl.WorkmanServiceImpl;
 
 /**
  * 
@@ -19,26 +24,18 @@ import kino.spring.test.model.User;
  * @version 1.0
  * @since JDK 1.7
  */
-public class UserTest extends TestAbstractJunit {
+public class WorkmanServiceTest extends TestAbstractJunit {
 	
 	@Autowired
-	private UserMapper userMapper;
+	private WorkmanServiceImpl WorkmanServiceImpl;
 	
-	/**
-	 * 
-	 * 测试根据id查询用户. <br/> 
-	 * 
-	 * @author 肖晓峰
-	 * @date: 2016年4月21日 下午8:13:14
-	 * @version 1.0
-	 *
-	 */
+
 	@Test
-	public void testSelectUserById(){
-		Long id = 1l;
-		User user = userMapper.selectUserById(id);
-		logger.info(JSON.toJSONString(user));
-		Assert.assertNotNull(user);
+	public void testgetWorkmanInfo(){
+		System.out.println(WorkmanServiceImpl.getWorkmanInfo());
 	}
+	
+
+	
 	
 }
