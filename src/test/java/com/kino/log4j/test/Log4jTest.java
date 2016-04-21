@@ -10,6 +10,6 @@ public class Log4jTest {
 	
 	@Test
 	public void testHelloWorld(){
-		logger.info("HelloWorld!1111");
+		logger.info("HelloWorld!11112");
 	}
 }
