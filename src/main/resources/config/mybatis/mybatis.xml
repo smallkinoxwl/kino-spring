@@ -35,7 +35,7 @@
 	
 	<!-- 会话 -->
 	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-		<property name="basePackage" value="com.bubugao.shop" />
+		<property name="basePackage" value="kino.spring.test" />
 		<property name="sqlSessionFactoryBeanName" value="sqlSessionFactory" />
 	</bean>
 	

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="kino.spring.test.dao.UserMapper" >
+	<resultMap type="kino.spring.test.model.User" id="UserMap">
+		<id column="id" property="id" javaType="java.lang.Long" jdbcType="INTEGER"/>
+		<result column="name" property="name" javaType="java.lang.String" jdbcType="VARCHAR"/>
+		<result column="phone" property="phone" javaType="java.lang.String" jdbcType="VARCHAR"/>
+		<result column="sex" property="sex" javaType="java.lang.Integer" jdbcType="TINYINT"/>
+		<result column="head_img" property="headImg" javaType="java.lang.String" jdbcType="VARCHAR"/>
+		<result column="background_img" property="backgroundImg" javaType="java.lang.String" jdbcType="VARCHAR"/>
+	</resultMap>
+	
+	<!-- 字段名 -->
+	<sql id="baseColumn">
+		id,name,phone,sex,head_img,background_img
+	</sql>
+	
+	<!-- 根据id查用户 -->
+	<select id="selectUserById" resultMap="UserMap" parameterType="java.lang.Long">
+		select 
+			<include refid="baseColumn"></include>
+		from user
+		<where>
+			id = #{id,jdbcType=INTEGER}
+		</where>
+	</select>
+</mapper>
