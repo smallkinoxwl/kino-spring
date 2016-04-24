@@ -17,10 +17,9 @@
 		JOIN  essay_relation AS er ON (er.phone=w.phone)
 		JOIN  essay AS e ON (e.essay_relation_id=er.id)
 		WHERE user_type=1 and w.phone in 
-		 <foreach collection="phoneList" item="phone" index="index" open="(" separator="," close=")">
-		 		#{phone}
-		 </foreach>
-
+    	 <foreach collection="phoneList" item="phone" index="index" open="(" separator="," close=")">
+    	 		#{phone}
+    	 </foreach>
 	</select>
 	
 </mapper>
