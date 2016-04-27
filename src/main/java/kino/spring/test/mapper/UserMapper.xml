@@ -16,12 +16,10 @@
 	</sql>
 	
 	<!-- 根据id查用户 -->
-	<select id="selectUserById" resultMap="UserMap" parameterType="java.lang.Long">
-		select 
-			<include refid="baseColumn"></include>
-		from user
-		<where>
-			id = #{id,jdbcType=INTEGER}
-		</where>
+	<select id="getUserShare" resultType="java.util.Map">
+		SELECT er.`phone`,er.theme,e.img,e.essay_relation_id
+		FROM `essay_relation` er
+		JOIN essay e ON (er.id=e.essay_relation_id)
+		WHERE er.`user_type`=2 AND e.main_picture=1 ORDER BY create_time
 	</select>
 </mapper>

@@ -1,5 +1,9 @@
 package kino.spring.test.dao;
 
+
+import java.util.List;
+import java.util.Map;
+
 import kino.spring.test.model.User;
 
 /**
@@ -15,14 +19,13 @@ public interface UserMapper{
 	
 	/**
 	 * 
-	 * 根据用户id查询用户. <br/> 
+	 * 用户分享帖子列表
 	 * 
-	 * @author 肖晓峰
+	 * @author 谢维林
 	 * @date: 2016年4月21日 下午7:59:52
 	 * @version 1.0
-	 *
 	 * @param id 用户id
 	 * @return
 	 */
-	User selectUserById(Long id);
+	List<Map<String, Object>> getUserShare();
 }

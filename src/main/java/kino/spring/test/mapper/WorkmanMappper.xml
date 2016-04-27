@@ -3,14 +3,31 @@
 <mapper namespace="kino.spring.test.dao.WorkmanMapper">
 
 <!-- 查询工人基本信息 -->
-	<select id="getWorkmanInfo" resultType="java.util.Map">
-		SELECT workman.phone,`name`, head_img,trade,er.theme
-		FROM workman 
-		JOIN `essay_relation` er ON (er.phone=workman.phone)
-		WHERE user_type=1
+	<select id="getWorkmanInfo" parameterType="java.util.List" resultType="java.util.Map">
+		SELECT 
+				w.phone
+				, w.follow_number as followNumber
+				, w.`name`
+				, w.head_img
+				, w.trade
+				, er.theme
+				, er.id as essayRelationId
+				, er.price
+				, er.like_number
+				, er.comment_number
+				, UNIX_TIMESTAMP(IF(w.update_time !='0000-00-00 00:00:00',w.update_time,w.create_time)) AS update_time  <!-- 将日期转为妙 -->  
+		FROM workman w
+		JOIN `essay_relation` er ON (er.phone=w.phone)
+		WHERE er.user_type=1
+		<if test="phoneList.size()!=0 and phoneList!=null">
+			and w.phone in 
+			<foreach collection="phoneList" item="phone" index="index" open="(" separator="," close=")">
+	    	 		#{phone}
+	    	 </foreach>
+    	 </if>
 	</select>
 	
-<!-- 指定工人帖子对应得图片 -->
+	<!-- 指定工人帖子对应得图片 -->
 	<select id="getWorkmanImgs" parameterType="java.util.List" resultType="java.util.Map">
 		SELECT w.phone,e.img,e.content
 		FROM workman AS w
@@ -20,6 +37,29 @@
     	 <foreach collection="phoneList" item="phone" index="index" open="(" separator="," close=")">
     	 		#{phone}
     	 </foreach>
+    	 ORDER BY main_picture LIMIT 3
+	</select>
+	
+	<!-- 全部有效工种类目 -->
+	<select id="getTypeAll" parameterType="java.util.List" resultType="java.util.List">
+		SELECT `name` FROM `type` WHERE `type`=1  ORDER BY `order`
+	</select>
+	
+	<!-- 查询帖子详情 -->
+	<select id="getWorkmanPostInfo" parameterType="java.util.Map" resultType="java.util.Map">
+		SELECT e.img,IF(e.content IS NULL,"null",e.content) as content
+		FROM workman w
+		JOIN `essay_relation` er ON (er.phone=w.phone)
+		JOIN `essay` e ON (e.essay_relation_id=er.id)
+		WHERE w.phone=#{phone} and er.id=#{essayRelationId}
+	</select>
+	
+	<!-- 查询帖子对应的评论 -->
+	<select id="getCommnetInfo" parameterType="int" resultType="java.util.Map">
+		SELECT c.head_img,c.comment_text,UNIX_TIMESTAMP(c.create_time) AS create_time,c.comment_id,c.name,IF(ct.name IS NULL,"",ct.name) AS replyName
+		FROM  `comment`  c
+		LEFT JOIN `comment` ct ON (c.id=ct.comment_id)
+		WHERE c.essay_relation_id=#{essayRelationId}
 	</select>
 	
 </mapper>
