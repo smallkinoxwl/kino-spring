@@ -1,18 +1,9 @@
 package kino.spring.junit.controller;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import com.alibaba.fastjson.JSON;
-
 import kino.spring.junit.common.TestAbstractJunit;
-import kino.spring.test.dao.UserMapper;
-import kino.spring.test.dao.WorkmanMapper;
-import kino.spring.test.model.User;
+import kino.spring.test.mvc.WorkmanController;
 
 /**
  * 
@@ -23,42 +14,25 @@ import kino.spring.test.model.User;
  * @version 1.0
  * @since JDK 1.7
  */
-public class UserTest extends TestAbstractJunit {
+public class WorkmanControllerTest extends TestAbstractJunit {
 	
 	@Autowired
-	private UserMapper userMapper;
+	private WorkmanController workmanController;
+
 	
-	@Autowired
-	private WorkmanMapper workmanDao;
-	/**
-	 * 
-	 * 测试根据id查询用户. <br/> 
-	 * 
-	 * @author 肖晓峰
-	 * @date: 2016年4月21日 下午8:13:14
-	 * @version 1.0
-	 *
-	 */
 	@Test
-	public void testSelectUserById(){
-		Long id = 1l;
-		User user = userMapper.selectUserById(id);
-		logger.info(JSON.toJSONString(user));
-		Assert.assertNotNull(user);
+	public void testGetTypeAll(){
+		System.out.println(workmanController.getTypeAll(null));
 	}
 	
 	@Test
 	public void testGetWorkmanInfo(){
-		System.out.println(workmanDao.getWorkmanInfo());
+		System.out.println(workmanController.getWorkmanInfo(null));
 	}
 	
 	@Test
-	public void testGetWorkmanImgs(){
-		List<String> phoneList = new ArrayList<String>();
-		phoneList.add(111+"");
-		phoneList.add(222+"");
-		System.out.println(workmanDao.getWorkmanImgs(phoneList));
+	public void testGetWorkmanOrUserPostInfo(){
+		System.out.println(workmanController.getWorkmanOrUserPostInfo(null, "111",1));
 	}
-	
 	
 }

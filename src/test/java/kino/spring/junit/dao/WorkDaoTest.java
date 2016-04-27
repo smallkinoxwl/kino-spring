@@ -1,7 +1,9 @@
 package kino.spring.junit.dao;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -23,33 +25,17 @@ import kino.spring.test.model.User;
  * @version 1.0
  * @since JDK 1.7
  */
-public class UserTest extends TestAbstractJunit {
+public class WorkDaoTest extends TestAbstractJunit {
 	
-	@Autowired
-	private UserMapper userMapper;
 	
 	@Autowired
 	private WorkmanMapper workmanMapper;
-	/**
-	 * 
-	 * 测试根据id查询用户. <br/> 
-	 * 
-	 * @author 肖晓峰
-	 * @date: 2016年4月21日 下午8:13:14
-	 * @version 1.0
-	 *
-	 */
-	@Test
-	public void testSelectUserById(){
-		Long id = 1l;
-		User user = userMapper.selectUserById(id);
-		logger.info(JSON.toJSONString(user));
-		Assert.assertNotNull(user);
-	}
 	
 	@Test
 	public void testGetWorkmanInfo(){
-		System.out.println(workmanMapper.getWorkmanInfo());
+		List<String> list = new ArrayList<String>();
+		list.add(111+"");
+		System.out.println(workmanMapper.getWorkmanInfo(list));
 	}
 	
 	@Test
@@ -60,5 +46,17 @@ public class UserTest extends TestAbstractJunit {
 		System.out.println(workmanMapper.getWorkmanImgs(phoneList));
 	}
 	
+	@Test
+	public void testGetTypeAll(){
+		System.out.println(workmanMapper.getTypeAll());
+	}
 	
+	@Test
+	public void testGetWorkmanPostInfo(){
+		
+		Map<String, Object> phoneInfo = new HashMap<String, Object>();
+		phoneInfo.put("phone", "111");
+		phoneInfo.put("essayRelationId", 1);
+		System.out.println(workmanMapper.getWorkmanPostInfo(phoneInfo));
+	}
 }

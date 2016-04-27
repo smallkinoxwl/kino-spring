@@ -1,12 +1,20 @@
 package kino.spring.junit.service;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-
+import com.alibaba.fastjson.JSON;
 
 import kino.spring.junit.common.TestAbstractJunit;
+import kino.spring.test.dao.UserMapper;
+import kino.spring.test.dao.WorkmanMapper;
+import kino.spring.test.model.User;
 import kino.spring.test.mvc.service.impl.UserServiceImpl;
+import kino.spring.test.mvc.service.impl.WorkmanServiceImpl;
 
 /**
  * 
@@ -17,14 +25,14 @@ import kino.spring.test.mvc.service.impl.UserServiceImpl;
  * @version 1.0
  * @since JDK 1.7
  */
-public class WorkmanServiceTest extends TestAbstractJunit {
+public class UserServiceTest extends TestAbstractJunit {
 	
 	@Autowired
 	private UserServiceImpl userServiceImpl;
 	
 
 	@Test
-	public void testgetUserShare(){
+	public void testgetWorkmanInfo(){
 		System.out.println(userServiceImpl.getUserShare());
 	}
 	

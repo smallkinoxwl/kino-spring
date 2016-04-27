@@ -1,12 +1,12 @@
-package kino.spring.junit.service;
+package kino.spring.junit.dao;
+
 
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 
-
 import kino.spring.junit.common.TestAbstractJunit;
-import kino.spring.test.mvc.service.impl.UserServiceImpl;
+import kino.spring.test.dao.UserMapper;
 
 /**
  * 
@@ -17,18 +17,16 @@ import kino.spring.test.mvc.service.impl.UserServiceImpl;
  * @version 1.0
  * @since JDK 1.7
  */
-public class WorkmanServiceTest extends TestAbstractJunit {
+public class UserDaoTest extends TestAbstractJunit {
+	
 	
 	@Autowired
-	private UserServiceImpl userServiceImpl;
+	private UserMapper userMapper;
 	
-
 	@Test
-	public void testgetUserShare(){
-		System.out.println(userServiceImpl.getUserShare());
+	public void testGetUserShare(){
+		System.out.println(userMapper.getUserShare());
 	}
-	
-
 	
 	
 }
