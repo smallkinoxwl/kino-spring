@@ -20,4 +20,5 @@
      <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver" p:prefix="/WEB-INF/view/" p:suffix=".jsp" />  
      
      <import resource="../mybatis/mybatis.xml"/>
+     <import resource="./spring-bean.xml"/>
 </beans> 
