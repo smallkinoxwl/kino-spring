@@ -41,7 +41,7 @@
 	</select>
 	
 	<!-- 全部有效工种类目 -->
-	<select id="getTypeAll" parameterType="java.util.List" resultType="java.util.List">
+	<select id="getTypeAll"  resultType="String">
 		SELECT `name` FROM `type` WHERE `type`=1  ORDER BY `order`
 	</select>
 	
