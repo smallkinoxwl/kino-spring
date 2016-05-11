@@ -36,4 +36,40 @@ public interface WorkmanService {
      * @return
      */
     public List<Map<String,Object>>  getCommnetInfo(int essayRelationId);
+    
+    /**
+     * 获取工人的基本信息
+     * @param phone
+     * @return
+     */
+    public Map<String, Object> getWorkmanBasicInfo(String phone);
+    
+    /**
+     * 查询工人详情 帖子列表
+     * @param phone
+     * @return
+     */
+    public List<Map<String,Object>> getWorkmanListInfo(String phone);
+    
+    /**
+     * 插入帖子关联表信息
+     * @param map
+     * @return
+     */
+    public int addEssayRelation(String phone,double price,int type,String work_type,String theme,String Accuracy,String dimension,String address);
+    
+    /**
+     * 插入帖子图片
+     * @param list
+     * @return
+     */
+    public int addEssay(List<Map<String, Object>> list);
+    
+    /**
+     * 添加任务
+     * @param map
+     * @return
+     */
+    int addStack(Double price,String tack,String task_address,String start_time,String end_time);
+    
 }

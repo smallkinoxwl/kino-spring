@@ -15,6 +15,24 @@
 		id,name,phone,sex,head_img,background_img
 	</sql>
 	
+	<!-- 用户登录 -->
+	<select id="userlanding" parameterType="java.util.Map" resultType="int">
+		SELECT COUNT(*)
+		FROM USER
+		WHERE `phone`=#{phone} AND `password`=#{password}	
+	</select>
+	
+	<!-- 电话是否存在 -->
+	<select id="getPhoneStatus" parameterType="String" resultType="int">
+		SELECT COUNT(*) FROM USER WHERE phone=#{phone}
+	</select>
+	
+	<!-- 注册用户 -->
+	<insert id="insertUser" parameterType="java.util.Map">
+		INSERT INTO USER (phone,PASSWORD) VALUES(#{phone},#{PASSWORD})
+	</insert>
+
+	
 	<!-- 根据id查用户 -->
 	<select id="getUserShare" resultType="java.util.Map">
 		SELECT er.`phone`,er.theme,e.img,e.essay_relation_id
@@ -22,4 +40,102 @@
 		JOIN essay e ON (er.id=e.essay_relation_id)
 		WHERE er.`user_type`=2 AND e.main_picture=1 ORDER BY create_time
 	</select>
+	
+	<!-- 查询用户分享 或 悬赏文章信息  -->
+	<select id="getUserShareEssay" parameterType="java.util.Map" resultType="java.util.Map">
+		SELECT er.theme
+			,er.id AS essayRelationId
+			,UNIX_TIMESTAMP(er.create_time) as createTime
+			,GROUP_CONCAT(e.`img`) as imgs
+			,er.like_number as likeNumber
+			,er.comment_number as commentNumber
+		FROM `essay_relation` er
+		JOIN `essay` e ON (e.`essay_relation_id`=er.id)
+		WHERE er.phone=#{phone} AND er.type=2 GROUP BY e.`essay_relation_id` ORDER BY er.create_time DESC  LIMIT #{start},#{end}
+	</select>
+	
+	<!-- 查询文章对应图片 -->
+	<select id="getUserShareEssayImg" parameterType="java.util.List" resultType="java.util.Map">
+		SELECT GROUP_CONCAT(img),essay_relation_id
+		FROM essay 
+		WHERE `status`=1 AND essay_relation_id IN 
+			<foreach collection="essayRelationIds" item="essayRelationId" index="index" open="(" separator="," close=")">
+	    	 		#{essayRelationId}
+	    	 </foreach>
+	    	 GROUP BY essay_relation_id
+	</select>
+	
+	<!-- 获取文章最近的两条评论 -->
+	<select id="getCommentInfo"  parameterType="String" resultType="java.util.Map">
+		SELECT comment_text,essay_relation_id,comment_id,`name`,reply_name
+		FROM `comment`
+		WHERE essay_relation_id =#{essayRelationId}  ORDER BY create_time DESC LIMIT 0,2
+	</select>
+	
+	<!-- 获取悬赏文章  -->
+	<select id="getRewardInfo"  parameterType="java.util.Map" resultType="java.util.Map">
+		SELECT er.id AS essayRelationId 
+				,er.`price`
+				,UNIX_TIMESTAMP(er.`create_time`) AS createTime
+				,er.like_number AS likeNumber
+				,er.comment_number AS commentNumber
+				,er.theme
+				,er.`address`
+				,e.`img`
+				,er.reward_status as rewardStatus
+		FROM `essay_relation` er
+		JOIN essay e ON (er.`id`=e.`essay_relation_id`)
+		WHERE er.`phone`=#{phone} AND 
+				er.`reward_status`=#{rewardStatus} AND 
+				er.`status`=1 AND 
+				e.`main_picture`=1 
+				LIMIT #{start},#{end}
+	</select>
+	
+	<!-- 查询图片数量 -->
+	<select id="getImgsNumber" parameterType="String" resultType="int">
+		SELECT COUNT(*) as number FROM essay WHERE essay_relation_id=#{essayRelationId} AND STATUS=1
+	</select>
+	
+	<!-- 查询用户悬赏有多少人可以接单 -->
+	<select id="getEssayRelationWorkman" parameterType="String" resultType="java.util.Map">
+		SELECT erw.`workman_img` as workmanHeadImg
+			,erw.`workman_phone` as phone
+			,erw.essay_relation_id as essayRelationId
+		FROM `essay_relation_workman` erw
+		JOIN  essay_relation er ON (er.`id`=erw.`essay_relation_id`)
+		WHERE er.`phone`=#{phone}
+	</select>
+	
+	<!-- 查询用户悬赏文章的接单人信息 -->
+	<select id="getRewardWorkmanInfo"  parameterType="String" resultType="java.util.Map">
+		SELECT w.phone,w.name,w.trade,w.sex,w.head_img
+		FROM essay_relation_workman erw
+		JOIN workman w ON (erw.`workman_phone`=w.phone)
+		WHERE erw.`essay_relation_id`=#{essayRelationId} AND erw.is_on=1 AND erw.`status`=1
+	</select>
+	
+	<!-- 查询关注数量 -->
+	<select id="getFollowNum"  parameterType="String" resultType="int">
+		SELECT COUNT(*)
+		FROM follow
+		WHERE user_phone=#{phone}
+	</select>
+
+	<!-- 查询用户关注的工人信息 -->
+	<select id="getFollowInfo"  parameterType="String" resultType="java.util.Map">
+		SELECT w.name
+				,w.trade
+				,w.head_img
+				,UNIX_TIMESTAMP(w.update_time) as updateTime
+				,w.personal_signature
+				,w.sex
+		FROM follow f
+		JOIN workman w ON (f.workman_phone=w.phone)
+		WHERE user_phone=#{phone} AND f.status=1
+	</select>
+
+
+
+
 </mapper>

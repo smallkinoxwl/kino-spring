@@ -18,7 +18,7 @@
 				, UNIX_TIMESTAMP(IF(w.update_time !='0000-00-00 00:00:00',w.update_time,w.create_time)) AS update_time  <!-- 将日期转为妙 -->  
 		FROM workman w
 		JOIN `essay_relation` er ON (er.phone=w.phone)
-		WHERE er.user_type=1
+		WHERE er.type=3
 		<if test="phoneList.size()!=0 and phoneList!=null">
 			and w.phone in 
 			<foreach collection="phoneList" item="phone" index="index" open="(" separator="," close=")">
@@ -27,13 +27,20 @@
     	 </if>
 	</select>
 	
+	<!-- 工人首页基本信息 -->
+	<select id="getWorkmanBasicInfo" parameterType="String" resultType="java.util.Map">
+		SELECT `name`,phone,number,trade,sex,head_img,personal_signature
+		FROM `workman` 
+		WHERE phone=#{phone}
+	</select>
+	
 	<!-- 指定工人帖子对应得图片 -->
 	<select id="getWorkmanImgs" parameterType="java.util.List" resultType="java.util.Map">
 		SELECT w.phone,e.img,e.content
 		FROM workman AS w
 		JOIN  essay_relation AS er ON (er.phone=w.phone)
 		JOIN  essay AS e ON (e.essay_relation_id=er.id)
-		WHERE user_type=1 and w.phone in 
+		WHERE type=3 and w.phone in 
     	 <foreach collection="phoneList" item="phone" index="index" open="(" separator="," close=")">
     	 		#{phone}
     	 </foreach>
@@ -56,10 +63,46 @@
 	
 	<!-- 查询帖子对应的评论 -->
 	<select id="getCommnetInfo" parameterType="int" resultType="java.util.Map">
-		SELECT c.head_img,c.comment_text,UNIX_TIMESTAMP(c.create_time) AS create_time,c.comment_id,c.name,IF(ct.name IS NULL,"",ct.name) AS replyName
+		SELECT c.head_img,c.comment_text,UNIX_TIMESTAMP(c.create_time) AS create_time,c.comment_id,c.name,reply_name AS replyName
 		FROM  `comment`  c
-		LEFT JOIN `comment` ct ON (c.id=ct.comment_id)
 		WHERE c.essay_relation_id=#{essayRelationId}
 	</select>
+	
+	<!-- 查询工人详情 帖子列表 -->
+	<select id="getWorkmanListInfo"  parameterType="String" resultType="java.util.Map">
+ 		SELECT w.`name`,w.`head_img`,er.`price`,er.`id` AS essayRelationId,er.`theme`,er.`like_number`
+			 ,UNIX_TIMESTAMP(IF(er.update_time !='0000-00-00 00:00:00',er.update_time,er.create_time)) AS update_time ,er.`comment_number`
+		FROM `essay_relation` er
+		JOIN workman w ON (er.`phone`=w.`phone`)
+		WHERE w.phone=#{phone}
+	</select>
+	
+	<!-- 查询工人详情 帖子列表的图片 结果需要赛选前三张 -->
+	<select id="getWorkmanListImg" parameterType="String" resultType="java.util.Map">
+		SELECT GROUP_CONCAT( e.`img`) AS img ,e.`essay_relation_id` as essayRelationId
+		FROM essay e
+		JOIN `essay_relation` er ON (er.`id`=e.`essay_relation_id`)
+		WHERE er.`phone`=#{phone} GROUP BY essay_relation_id
+	</select>
+	
+	<!-- 插入帖子关联表信息 -->
+	<insert id="addEssayRelation"  parameterType="java.util.Map" useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO `essay_relation` (phone,price,`type`,work_type,theme,update_time,Accuracy,`dimension`,address) 
+		       VALUES(#{phone},#{price},#{type},#{work_type},#{theme},NOW(),#{Accuracy},#{dimension},#{address}); 
+	</insert>
+	
+	<!-- 插入帖子图片 -->
+	<insert id="addEssay" parameterType="java.util.List">
+		INSERT INTO `essay` (img,content,essay_relation_id,main_picture)
+			VALUES
+			<foreach collection="list" item="item" index="index" separator="," >  
+		        (#{item.img},#{item.content},#{item.essay_relation_id},#{item.main_picture})  
+		    </foreach>
+	</insert>
+	
+	<!-- 添加任务 -->
+	<insert id="addStack" parameterType="java.util.Map">
+		INSERT INTO `bespoke` (price,task,task_address,start_time,day) VALUES(#{price},#{task},#{task_address},#{start_time},#{day})
+	</insert>
 	
 </mapper>

@@ -21,5 +21,23 @@ public interface WorkmanMapper {
     List<Map<String, Object>> getWorkmanPostInfo(Map<String, Object> phoneInfo);
     
     //查询帖子对应的评论
-    List<Map<String,Object>> getCommnetInfo(int essayRelationId);
+    List<Map<String, Object>> getCommnetInfo(int essayRelationId);
+    
+    //工人首页基本信息
+    Map<String, Object> getWorkmanBasicInfo(String phone);
+    
+    //查询工人详情 帖子列表
+    List<Map<String, Object>> getWorkmanListInfo(String phone);
+    
+    //查询工人详情 帖子列表的图片 结果需要赛选前三张
+    List<Map<String, Object>> getWorkmanListImg(String phone);
+    
+    //插入帖子关联表信息
+    int addEssayRelation(Map<String, Object> map);
+    
+    //插入帖子图片
+    int addEssay(List<Map<String, Object>> list);
+    
+    //添加任务 
+    int addStack(Map<String, Object> map);
 }
