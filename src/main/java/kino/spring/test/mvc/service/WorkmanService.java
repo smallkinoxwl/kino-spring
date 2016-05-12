@@ -15,7 +15,7 @@ public interface WorkmanService {
 	 * @param s
 	 * @return
 	 */
-	public List<Map<String, Object>> getWorkmanInfo(int i,String s);
+	public List<Map<String, Object>> getWorkmanInfo();
 	
 	/**
 	 * 全部有效工种类目

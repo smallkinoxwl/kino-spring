@@ -120,7 +120,17 @@ public interface UserMapper{
 	 */
 	List<Map<String, Object>> getFollowInfo(String phone);
 
+	/**
+	 * 查询悬赏 分享 数量
+	 * @param map[phone:111,type:1] 1：悬赏 2 分享
+	 * @return
+	 */
+	int getEssayNum(Map<String, Object> map);
 	
-	
-	
+	/**
+	 * 查询用户地址
+	 * @param phone
+	 * @return
+	 */
+	List<Object> getUserAddress(String phone);
 }

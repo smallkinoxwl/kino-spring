@@ -24,7 +24,7 @@ public class WorkmanServiceImpl implements WorkmanService{
 	private SpringUtil springUtil;
 	
 	@Override
-	public List<Map<String, Object>> getWorkmanInfo(int i,String s) {
+	public List<Map<String, Object>> getWorkmanInfo() {
 		// TODO Auto-generated method stub
 		List<Map<String, Object>> workmanInfo = workmanMapper.getWorkmanInfo(new ArrayList<String>());
 		

@@ -119,9 +119,24 @@
 	<select id="getFollowNum"  parameterType="String" resultType="int">
 		SELECT COUNT(*)
 		FROM follow
-		WHERE user_phone=#{phone}
+		WHERE user_phone=#{phone} and status=1
 	</select>
-
+	
+	<!-- 查询悬赏 分享 数量 -->
+	<select id="getEssayNum" parameterType="java.util.Map" resultType="int">
+		SELECT COUNT(*)
+		FROM `essay_relation`
+		WHERE phone=#{phone} AND `type`=#{type} AND STATUS=1
+	</select>
+	
+	<!-- 查询用户地址 -->
+	<select id="getUserAddress" parameterType="String" resultType="String">
+		SELECT a.`address`
+		FROM address a
+		JOIN user u ON (a.`user_id`=u.`id`)
+		WHERE u.`phone`=#{phone} AND STATUS=1
+	</select>
+	
 	<!-- 查询用户关注的工人信息 -->
 	<select id="getFollowInfo"  parameterType="String" resultType="java.util.Map">
 		SELECT w.name

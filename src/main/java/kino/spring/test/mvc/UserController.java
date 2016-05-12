@@ -158,4 +158,23 @@ public class UserController {
 		return info;
 	}
 	
+	/**
+	 * 获取用户个人主页 个文章信息数量 
+	 * @param phone :电话
+	 * @return
+	 *   	"followNum": 3,   悬赏数量
+     * 		"shareNum": 0,    分享数量
+     * 		"essayNum": 1,    地址数量
+     * 		"addressNum": 2         关注数量
+	 */
+	@RequestMapping(value="getUserInfoNum",produces="text/html;charset=UTF-8")
+	@ResponseBody
+	public String getUserInfoNum(String phone){
+		Map<String, Object> userInfoNum = userService.getUserInfoNum(phone);
+		String info = JSON.toJSONString(userInfoNum);
+		return info;
+	}
+	
+	
+	
 }

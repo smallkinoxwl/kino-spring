@@ -45,7 +45,7 @@ public class WorkmanController {
 	@RequestMapping(value="getWorkmanInfo",produces="text/html;charset=UTF-8")
 	@ResponseBody
 	public String getWorkmanInfo(HttpServletResponse  response){
-		List<Map<String,Object>> workmanInfo = workmanService.getWorkmanInfo(1,"2");
+		List<Map<String,Object>> workmanInfo = workmanService.getWorkmanInfo();
 		String info = JSON.toJSONString(workmanInfo);
 		return info;
 	}

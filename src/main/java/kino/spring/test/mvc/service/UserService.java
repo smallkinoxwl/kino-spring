@@ -86,4 +86,11 @@ public interface UserService {
 	 * @return
 	 */
 	public List<Map<String, Object>> getFollowInfo(String phone);
+	
+	/**
+	 * 获取用户个 分享 悬赏 地址 关注数量
+	 * @param phone
+	 * @return
+	 */
+	public Map<String, Object> getUserInfoNum(String phone);
 }

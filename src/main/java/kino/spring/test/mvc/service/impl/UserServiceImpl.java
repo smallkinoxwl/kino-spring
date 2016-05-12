@@ -96,4 +96,22 @@ public class UserServiceImpl implements UserService{
 	public List<Map<String, Object>> getFollowInfo(String phone){
 		return userMapper.getFollowInfo(phone);
 	}
+
+	@Override
+	public Map<String, Object> getUserInfoNum(String phone) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("phone", phone);
+		map.put("type", 1);
+		int essayNum = userMapper.getEssayNum(map); //查询用户悬赏文章数量
+		map.put("type", 2);
+		int shareNum = userMapper.getEssayNum(map);//查询用户分享文章数量
+		int followNum = userMapper.getFollowNum(phone);//查询用户关注数量
+		int addressNum = userMapper.getUserAddress(phone).size();//查询用户地址数量
+		map.clear();
+		map.put("essayNum", essayNum);
+		map.put("shareNum", shareNum);
+		map.put("followNum", followNum);
+		map.put("addressNum", addressNum);
+		return map;
+	}
 }
