@@ -34,7 +34,7 @@ public class UserController {
 	 * @param password ：密码
 	 * @return 0：账号不存在, 2：密码错误, 3：正确
 	 */
-	@RequestMapping(value="userlanding",produces="text/html;charset=UTF-8")
+	@RequestMapping(value="userlanding",produces="josn/html;charset=UTF-8")
 	@ResponseBody
 	public String userlanding(String phone,String password){
 		 int userlanding = userService.userlanding(phone, password);
@@ -49,7 +49,7 @@ public class UserController {
 	 * @param code ：验证码
 	 * @return 1：手机号已经存在 2： 注册成功
 	 */
-	@RequestMapping(value="insertUser",produces="text/html;charset=UTF-8")
+	@RequestMapping(value="insertUser",produces="josn/html;charset=UTF-8")
 	@ResponseBody
 	public String insertUser(String phone,String password,String code){
 		int insertUser = userService.insertUser(phone, password, code);
@@ -62,7 +62,7 @@ public class UserController {
 	 * @param response
 	 * @return
 	 */
-	@RequestMapping(value="getUserShare",produces="text/html;charset=UTF-8")
+	@RequestMapping(value="getUserShare",produces="josn/html;charset=UTF-8")
 	@ResponseBody
 	public String getUserShare(HttpServletResponse  response){
 		List<Map<String, Object>> userShare = userService.getUserShare();
@@ -78,7 +78,7 @@ public class UserController {
 	 * @param end ：10(显示10条)
 	 * @return
 	 */
-	@RequestMapping(value="getShare",produces="text/html;charset=UTF-8")
+	@RequestMapping(value="getShare",produces="josn/html;charset=UTF-8")
 	@ResponseBody
 	public String getShare(HttpServletResponse  response,String phone,int start,int end){
 		List<Map<String, Object>> userShareEssay = userService.getUserShareEssay(phone,start,end);
@@ -110,7 +110,7 @@ public class UserController {
 	 * @param end ：10(显示10条)
 	 * @return
 	 */
-	@RequestMapping(value="getRewardInfo",produces="text/html;charset=UTF-8")
+	@RequestMapping(value="getRewardInfo",produces="josn/html;charset=UTF-8")
 	@ResponseBody
 	public String getRewardInfo(HttpServletResponse  response,String phone,String rewardStatus,int start,int end){
 		Map<String, Object> map = new HashMap<String, Object>();
@@ -147,7 +147,7 @@ public class UserController {
 	 * @param phone :电话
 	 * @return
 	 */
-	@RequestMapping(value="getFollowInfo",produces="text/html;charset=UTF-8")
+	@RequestMapping(value="getFollowInfo",produces="josn/html;charset=UTF-8")
 	@ResponseBody
 	public String getFollowInfo(String phone){
 		List<Map<String, Object>> followInfo = userService.getFollowInfo(phone);
@@ -167,7 +167,7 @@ public class UserController {
      * 		"essayNum": 1,    地址数量
      * 		"addressNum": 2         关注数量
 	 */
-	@RequestMapping(value="getUserInfoNum",produces="text/html;charset=UTF-8")
+	@RequestMapping(value="getUserInfoNum",produces="josn/html;charset=UTF-8")
 	@ResponseBody
 	public String getUserInfoNum(String phone){
 		Map<String, Object> userInfoNum = userService.getUserInfoNum(phone);
