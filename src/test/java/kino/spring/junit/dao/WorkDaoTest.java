@@ -59,4 +59,11 @@ public class WorkDaoTest extends TestAbstractJunit {
 		phoneInfo.put("essayRelationId", 1);
 		System.out.println(workmanMapper.getWorkmanPostInfo(phoneInfo));
 	}
+	
+	
+	@Test
+	public void testGetWorkmanListInfo(){
+		System.out.println(10/3);
+		System.out.println(workmanMapper.getWorkmanListInfo("111"));
+	}
 }

@@ -1,6 +1,5 @@
 package kino.spring.test.mvc;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -28,7 +27,7 @@ public class WorkmanController {
 	 * @param response
 	 * @return
 	 */
-	@RequestMapping(value="getTypeAll",produces="josn/html;charset=UTF-8")
+	@RequestMapping(value="getTypeAll" ,produces="application/json; charset=utf-8")
 	@ResponseBody
 	public String getTypeAll(HttpServletResponse  response){
 		List<String> workmanInfo = workmanService.getTypeAll();
@@ -42,7 +41,7 @@ public class WorkmanController {
 	 * @param response
 	 * @return
 	 */
-	@RequestMapping(value="getWorkmanInfo",produces="josn/html;charset=UTF-8")
+	@RequestMapping(value="getWorkmanInfo" ,produces="application/json; charset=utf-8")
 	@ResponseBody
 	public String getWorkmanInfo(HttpServletResponse  response){
 		List<Map<String,Object>> workmanInfo = workmanService.getWorkmanInfo();
@@ -56,7 +55,7 @@ public class WorkmanController {
 	 * @param response
 	 * @return
 	 */
-	@RequestMapping(value="getWorkmanOrUserPostInfo",produces="josn/html;charset=UTF-8")
+	@RequestMapping(value="getWorkmanOrUserPostInfo" ,produces="application/json; charset=utf-8")
 	@ResponseBody
 	public String getWorkmanOrUserPostInfo(HttpServletResponse  response,String phone,int essayRelationId){
 		Map<String, Object> workmanOrUserPostInfo = workmanService.getWorkmanOrUserPostInfo(phone, essayRelationId);
@@ -71,7 +70,7 @@ public class WorkmanController {
 	 * @param response
 	 * @return
 	 */
-	@RequestMapping(value="getWorkmanDetailInfo",produces="josn/html;charset=UTF-8")
+	@RequestMapping(value="getWorkmanDetailInfo" ,produces="application/json; charset=utf-8")
 	@ResponseBody
 	public String getWorkmanDetailInfo(HttpServletResponse  response,String phone,int essayRelationId){
 		Map<String, Object> workmanOrUserPostInfo = workmanService.getWorkmanOrUserPostInfo(phone, essayRelationId);
@@ -87,7 +86,7 @@ public class WorkmanController {
 	 * @param response
 	 * @return
 	 */
-	@RequestMapping(value="getWorkmanHomePage",produces="josn/html;charset=UTF-8")
+	@RequestMapping(value="getWorkmanHomePage" ,produces="application/json; charset=utf-8")
 	@ResponseBody
 	public String getWorkmanHomePage(HttpServletResponse  response,String phone){
 		String info = JSON.toJSONString(workmanService.getWorkmanBasicInfo(phone));
@@ -100,7 +99,7 @@ public class WorkmanController {
 	 * @param phone
 	 * @return
 	 */
-	@RequestMapping(value="getWorkmanListInfo",produces="josn/html;charset=UTF-8")
+	@RequestMapping(value="getWorkmanListInfo" ,produces="application/json; charset=utf-8")
 	@ResponseBody
 	public String getWorkmanListInfo(HttpServletResponse  response,String phone){
 		List<Map<String, Object>> workmanListInfo = workmanService.getWorkmanListInfo(phone);
@@ -123,7 +122,7 @@ public class WorkmanController {
 	 * @param address
 	 * @return
 	 */
-	@RequestMapping(value="addPost",produces="josn/html;charset=UTF-8")
+	@RequestMapping(value="addPost" ,produces="application/json; charset=utf-8")
 	@ResponseBody
 	public String addPost(HttpServletResponse  response,List<Map<String, Object>> imgContents,String phone,double price,int type,String work_type,String theme,String Accuracy,String dimension,String address){
 		
@@ -143,7 +142,7 @@ public class WorkmanController {
 	 * @param phone
 	 * @return
 	 */
-	@RequestMapping(value="addStack",produces="josn/html;charset=UTF-8")
+	@RequestMapping(value="addStack" ,produces="application/json; charset=utf-8")
 	@ResponseBody
 	public int addStack(HttpServletResponse  response,Double price,String task,String task_address,String start_time,String day){
 		return workmanService.addStack(price,task,task_address,start_time,day);

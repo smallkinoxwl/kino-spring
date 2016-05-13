@@ -28,4 +28,24 @@ public class UserControllerTest extends TestAbstractJunit {
 		System.out.println(userController.getUserShare(null));
 	}
 	
+	
+	@Test
+	public void testGetShare(){
+		System.out.println(userController.getShare(null, 111+"", 0, 10));
+	}
+	
+	@Test
+	public void testGetRewardInfo(){
+		System.out.println(userController.getRewardInfo(null, "111", "1", 0, 10));
+	}
+	
+	@Test
+	public void testGetFollowInfo(){
+		System.out.println(userController.getFollowInfo("18683506215"));
+	}
+	
+	@Test
+	public void testGetUserInfoNum(){
+		System.out.println(userController.getUserInfoNum("18683506215"));
+	}
 }
