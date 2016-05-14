@@ -30,7 +30,7 @@ public class WorkmanControllerTest extends TestAbstractJunit {
 	
 	@Test
 	public void testGetTypeAll(){
-		System.out.println(workmanController.getTypeAll(null));
+//		System.out.println(workmanController.getTypeAll(null));
 	}
 	
 	@Test
