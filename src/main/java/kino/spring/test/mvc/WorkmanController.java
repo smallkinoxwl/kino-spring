@@ -3,10 +3,15 @@ package kino.spring.test.mvc;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import kino.spring.test.model.DataResult;
 import kino.spring.test.mvc.service.WorkmanService;
+import kino.spring.test.util.DataResultUtil;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,6 +23,11 @@ import com.alibaba.fastjson.JSON;
 @Controller
 @RequestMapping("/workman")
 public class WorkmanController {
+	
+	/**
+	 * 日志
+	 */
+	private Logger logger = LogManager.getLogger(WorkmanController.class);
 
 	@Autowired
 	private WorkmanService workmanService;
@@ -27,12 +37,17 @@ public class WorkmanController {
 	 * @param response
 	 * @return
 	 */
-	@RequestMapping(value="getTypeAll" ,produces="application/json; charset=utf-8")
+	@RequestMapping("/getTypeAll")
 	@ResponseBody
-	public String getTypeAll(HttpServletResponse  response){
-		List<String> workmanInfo = workmanService.getTypeAll();
-		String info = JSON.toJSONString(workmanInfo);
-		return info;
+	public DataResult getTypeAll(HttpServletRequest request, HttpServletResponse response){
+		try {
+			List<String> workmanInfo = workmanService.getTypeAll();
+			return DataResultUtil.createDataResult(true, workmanInfo, "查询成功");
+		} catch (Exception e) {
+			//失败打印异常
+			logger.error("查询全部有效工种类目报错: ",e);
+			return DataResultUtil.createDataResult(false, null, "查询全部有效工种类目失败!");
+		}
 	}
 	
 	
