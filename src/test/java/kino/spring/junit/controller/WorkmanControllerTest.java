@@ -35,22 +35,22 @@ public class WorkmanControllerTest extends TestAbstractJunit {
 	
 	@Test
 	public void testGetWorkmanInfo(){
-		System.out.println(workmanController.getWorkmanInfo(null));
+		System.out.println(workmanController.getWorkmanInfo());
 	}
 	
 	@Test
 	public void testGetWorkmanOrUserPostInfo(){
-		System.out.println(workmanController.getWorkmanOrUserPostInfo(null, "111",1));
+		System.out.println(workmanController.getWorkmanDetailInfo("111",1));
 	}
 	
 	@Test
 	public void testGetWorkmanDetailInfo(){
-		System.out.println(workmanController.getWorkmanDetailInfo(null,"111",1));
+		System.out.println(workmanController.getWorkmanDetailInfo("111",1));
 	}
 	
 	@Test 
 	public void testGetWorkmanHomePage(){
-		System.out.println(workmanController.getWorkmanHomePage(null, "111"));
+		System.out.println(workmanController.getWorkmanHomePage("111"));
 	}
 	
 	@Test
@@ -67,7 +67,7 @@ public class WorkmanControllerTest extends TestAbstractJunit {
 		 System.out.println(formatter.format(date1));
 		 
 		 
-		System.out.println(workmanController.getWorkmanListInfo(null,"111"));
+		System.out.println(workmanController.getWorkmanListInfo("111"));
 	}
 	
 	
@@ -86,12 +86,12 @@ public class WorkmanControllerTest extends TestAbstractJunit {
 			map1.put("main_picture", 0);
 			imgContents.add(map1);
 			
-		System.out.println(workmanController.addPost(null, imgContents,"13888881234", 135, 1, "木工", "这是第一片文章", "0567567.567567", "0567567.567567", "黑龙江鸡西"));
+		System.out.println(workmanController.addPost( imgContents,"13888881234", 135, 1, "木工", "这是第一片文章", "0567567.567567", "0567567.567567", "黑龙江鸡西"));
 	}
 	
 	
 	@Test
 	public void testAddStack(){ //price,tack,task_address,start_time,end_time
-		System.out.println(workmanController.addStack(null,256.0,"镶地砖","北京市创阳区 传扬大厦","2016-04-11 11:26:00","2016-05-11 11:26:00"));
+		System.out.println(workmanController.addStack( 256.0,"镶地砖","北京市创阳区 传扬大厦","2016-04-11 11:26:00","2016-05-11 11:26:00"));
 	}
 }

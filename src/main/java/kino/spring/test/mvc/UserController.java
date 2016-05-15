@@ -7,9 +7,13 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
 
+import kino.spring.test.model.DataResult;
 import kino.spring.test.mvc.service.UserService;
+import kino.spring.test.util.DataResultUtil;
 import kino.spring.test.util.SpringUtil;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,6 +25,11 @@ import com.alibaba.fastjson.JSON;
 @RequestMapping("/user")
 public class UserController {
 
+	/**
+	 * 日志
+	 */
+	private Logger logger = LogManager.getLogger(WorkmanController.class);
+	
 	@Autowired
 	private UserService userService;
 	
@@ -34,11 +43,11 @@ public class UserController {
 	 * @param password ：密码
 	 * @return 0：账号不存在, 2：密码错误, 3：正确
 	 */
-	@RequestMapping(value="userlanding" ,produces="application/json; charset=utf-8")
+	@RequestMapping("/userlanding")
 	@ResponseBody
-	public String userlanding(String phone,String password){
+	public DataResult userlanding(String phone,String password){
 		 int userlanding = userService.userlanding(phone, password);
-		 return userlanding+"";
+		 return  DataResultUtil.createDataResult(true, userlanding, "用户登录");
 	}
 	
 	
@@ -49,11 +58,16 @@ public class UserController {
 	 * @param code ：验证码
 	 * @return 1：手机号已经存在 2： 注册成功
 	 */
-	@RequestMapping(value="insertUser" ,produces="application/json; charset=utf-8")
+	@RequestMapping("/insertUser")
 	@ResponseBody
-	public String insertUser(String phone,String password,String code){
-		int insertUser = userService.insertUser(phone, password, code);
-		return insertUser+"";
+	public DataResult insertUser(String phone,String password,String code){
+		try{
+			int insertUser = userService.insertUser(phone, password, code);
+			return  DataResultUtil.createDataResult(true, insertUser, "注册成功");
+		} catch (Exception e) {
+			logger.error("用户注册错误: ",e);
+			return DataResultUtil.createDataResult(false, null, "用户注册失败!");
+		}
 	}
 	
 	
@@ -62,47 +76,54 @@ public class UserController {
 	 * @param response
 	 * @return
 	 */
-	@RequestMapping(value="getUserShare" ,produces="application/json; charset=utf-8")
+	@RequestMapping("/getUserShare")
 	@ResponseBody
-	public String getUserShare(HttpServletResponse  response){
-		List<Map<String, Object>> userShare = userService.getUserShare();
-		String info = JSON.toJSONString(userShare);
-		return info;
+	public DataResult getUserShare(HttpServletResponse  response){
+		try{
+			List<Map<String, Object>> userShare = userService.getUserShare();
+			return  DataResultUtil.createDataResult(true, userShare, "查询成功");
+		} catch (Exception e) {
+			logger.error("查询身边用户分享帖子列表发生错误: ",e);
+			return DataResultUtil.createDataResult(false, null, "查询身边用户分享帖子列表失败!");
+		}
 	}
 	
 	/**
-	 * 用户分享的文章
+	 * 查询用户分享的文章
 	 * @param response
 	 * @param phone ：电话
 	 * @param start ：0(第一条) 
 	 * @param end ：10(显示10条)
 	 * @return
 	 */
-	@RequestMapping(value="getShare" ,produces="application/json; charset=utf-8")
+	@RequestMapping("/getShare")
 	@ResponseBody
-	public String getShare(HttpServletResponse  response,String phone,int start,int end){
-		List<Map<String, Object>> userShareEssay = userService.getUserShareEssay(phone,start,end);
-		
-		for(Map<String, Object> userShare : userShareEssay){
-			List<Map<String, Object>> commentInfo = userService.getCommentInfo(userShare.get("essayRelationId").toString());
-			String imgs = userShare.get("imgs").toString();
-			List<Object> list = new ArrayList<Object>();
-			String[] split = imgs.split(",");
-			list.add(split[0]);
-			list.add(split[1]);
-			list.add(split[2]);
+	public DataResult getShare(String phone,int start,int end){
+		try{
+			List<Map<String, Object>> userShareEssay = userService.getUserShareEssay(phone,start,end);
 			
-			userShare.put("createTime", springUtil.getHour(Integer.valueOf(userShare.get("createTime").toString())));
-			userShare.put("comment", commentInfo);
-			userShare.put("imgs", list);
+			for(Map<String, Object> userShare : userShareEssay){
+				List<Map<String, Object>> commentInfo = userService.getCommentInfo(userShare.get("essayRelationId").toString());
+				String imgs = userShare.get("imgs").toString();
+				List<Object> list = new ArrayList<Object>();
+				String[] split = imgs.split(",");
+				list.add(split[0]);
+				list.add(split[1]);
+				list.add(split[2]);
+				
+				userShare.put("createTime", springUtil.getHour(Integer.valueOf(userShare.get("createTime").toString())));
+				userShare.put("comment", commentInfo);
+				userShare.put("imgs", list);
+			}
+			return DataResultUtil.createDataResult(true, userShareEssay, "查询成功");
+		} catch (Exception e) {
+			logger.error("查询用户分享的文章报错: ",e);
+			return DataResultUtil.createDataResult(false, null, "查询用户分享的文章 失败!");
 		}
-		
-		String info = JSON.toJSONString(userShareEssay);
-		return info;
 	}
 	
 	/**
-	 * 用户悬赏的文章
+	 * 查询用户悬赏的文章
 	 * @param response
 	 * @param phone ：电话
 	 * @param rewardStatus ：1悬赏中,2进行中,3待评论,4完成,5已取消
@@ -110,36 +131,41 @@ public class UserController {
 	 * @param end ：10(显示10条)
 	 * @return
 	 */
-	@RequestMapping(value="getRewardInfo" ,produces="application/json; charset=utf-8")
+	@RequestMapping("/getRewardInfo")
 	@ResponseBody
-	public String getRewardInfo(HttpServletResponse  response,String phone,String rewardStatus,int start,int end){
-		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("phone", phone);
-		map.put("rewardStatus", rewardStatus);
-		map.put("start", start);
-		map.put("end", end);
-		List<Map<String, Object>> rewardInfo = userService.getRewardInfo(map);
-		List<Map<String, Object>> essayRelationWorkman = userService.getEssayRelationWorkman(phone);
-		for(Map<String, Object> reward : rewardInfo){
-			String essayRelationId = reward.get("essayRelationId").toString();
-			List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
-			
-			for(Map<String, Object> workMan : essayRelationWorkman){
-				String id = workMan.get("essayRelationId").toString();
-				if(essayRelationId.equals(id)){
-					list.add(workMan);
+	public DataResult getRewardInfo(String phone,String rewardStatus,int start,int end){
+		try{
+			Map<String, Object> map = new HashMap<String, Object>();
+			map.put("phone", phone);
+			map.put("rewardStatus", rewardStatus);
+			map.put("start", start);
+			map.put("end", end);
+			List<Map<String, Object>> rewardInfo = userService.getRewardInfo(map);
+			List<Map<String, Object>> essayRelationWorkman = userService.getEssayRelationWorkman(phone);
+			for(Map<String, Object> reward : rewardInfo){
+				String essayRelationId = reward.get("essayRelationId").toString();
+				List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
+				
+				for(Map<String, Object> workMan : essayRelationWorkman){
+					String id = workMan.get("essayRelationId").toString();
+					if(essayRelationId.equals(id)){
+						list.add(workMan);
+					}
+				}
+				reward.put("humans", list);
+				reward.put("createTime", springUtil.getHour(Integer.valueOf(reward.get("createTime").toString())));
+				reward.put("pictureNumber", userService.getImgsNumber(essayRelationId));
+				
+				if(!rewardStatus.equals(1)){
+					reward.put("workmanInfo", userService.getRewardWorkmanInfo(essayRelationId));
 				}
 			}
-			reward.put("humans", list);
-			reward.put("createTime", springUtil.getHour(Integer.valueOf(reward.get("createTime").toString())));
-			reward.put("pictureNumber", userService.getImgsNumber(essayRelationId));
 			
-			if(!rewardStatus.equals(1)){
-				reward.put("workmanInfo", userService.getRewardWorkmanInfo(essayRelationId));
-			}
+			return DataResultUtil.createDataResult(true, rewardInfo, "查询成功");
+		} catch (Exception e) {
+			logger.error("查询用户悬赏的文章 报错: ",e);
+			return DataResultUtil.createDataResult(false, null, "查询用户悬赏的文章 失败!");
 		}
-		String info = JSON.toJSONString(rewardInfo);
-		return info;
 	}
 	
 	/**
@@ -147,15 +173,19 @@ public class UserController {
 	 * @param phone :电话
 	 * @return
 	 */
-	@RequestMapping(value="getFollowInfo" ,produces="application/json; charset=utf-8")
+	@RequestMapping("/getFollowInfo")
 	@ResponseBody
-	public String getFollowInfo(String phone){
-		List<Map<String, Object>> followInfo = userService.getFollowInfo(phone);
-		for(Map<String, Object> follow : followInfo){
-			follow.put("updateTime", springUtil.getHour(Integer.valueOf(follow.get("updateTime").toString())));
+	public DataResult getFollowInfo(String phone){
+		try{
+			List<Map<String, Object>> followInfo = userService.getFollowInfo(phone);
+			for(Map<String, Object> follow : followInfo){
+				follow.put("updateTime", springUtil.getHour(Integer.valueOf(follow.get("updateTime").toString())));
+			}
+			return DataResultUtil.createDataResult(true, followInfo, "查询成功");	
+		} catch (Exception e) {
+			logger.error("查询用户关注的工人信息报错: ",e);
+			return DataResultUtil.createDataResult(false, null, "查询用户关注的工人信息失败!");
 		}
-		String info = JSON.toJSONString(followInfo);
-		return info;
 	}
 	
 	/**
@@ -167,12 +197,16 @@ public class UserController {
      * 		"essayNum": 1,    地址数量
      * 		"addressNum": 2         关注数量
 	 */
-	@RequestMapping(value="getUserInfoNum" ,produces="application/json; charset=utf-8")
+	@RequestMapping("/getUserInfoNum")
 	@ResponseBody
-	public String getUserInfoNum(String phone){
-		Map<String, Object> userInfoNum = userService.getUserInfoNum(phone);
-		String info = JSON.toJSONString(userInfoNum);
-		return info;
+	public DataResult getUserInfoNum(String phone){
+		try{
+			Map<String, Object> userInfoNum = userService.getUserInfoNum(phone);
+			return DataResultUtil.createDataResult(true, userInfoNum, "查询成功");
+		} catch (Exception e) {
+			logger.error("获取用户个人主页 个文章信息数量 报错: ",e);
+			return DataResultUtil.createDataResult(false, null, "查询用户个人主页 个文章信息数量 失败!");
+		}
 	}
 	
 	

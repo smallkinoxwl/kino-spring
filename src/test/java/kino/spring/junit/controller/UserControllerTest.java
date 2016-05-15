@@ -31,12 +31,12 @@ public class UserControllerTest extends TestAbstractJunit {
 	
 	@Test
 	public void testGetShare(){
-		System.out.println(userController.getShare(null, 111+"", 0, 10));
+		System.out.println(userController.getShare( 111+"", 0, 10));
 	}
 	
 	@Test
 	public void testGetRewardInfo(){
-		System.out.println(userController.getRewardInfo(null, "111", "1", 0, 10));
+		System.out.println(userController.getRewardInfo( "111", "1", 0, 10));
 	}
 	
 	@Test
