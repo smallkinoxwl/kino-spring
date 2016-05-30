@@ -150,6 +150,33 @@
 		WHERE user_phone=#{phone} AND f.status=1
 	</select>
 
+	<!-- 查询用户基本信息 -->
+	<select id="getUserInfo" parameterType="String" resultType="java.util.Map">
+		SELECT `name`,phone,sex,head_img FROM `user` WHERE phone=#{phone}
+	</select>
+
+	<!-- 查询用户是否赞过莫文章 -->
+	<select id="selectLikeStatus" parameterType="java.util.Map" resultType="int">
+		SELECT COUNT(1) FROM `like` WHERE phone=#{phone} AND essay_relation_id=#{essayRelationId}
+	</select>
+
+	<!-- 添加用户点赞信息 -->
+	<insert id="addLikeInfo"  parameterType="java.util.Map">
+		INSERT INTO `like` (phone,essay_relation_id) VALUES(#{phone},#{essayRelationId})
+	</insert>
+
+	<!-- 文章点赞数量加1 -->
+	<update id="addlikeNum" parameterType="int">
+		UPDATE `essay_relation` SET like_number=like_number+1 WHERE id=#{essayRelationId}
+	</update>
+	
+	<!-- 添加品论 -->
+	<insert id="addCommentInfo" parameterType="java.util.Map" >
+		INSERT INTO comment (comment_text,essay_relation_id,user_id,comment_id,head_img,`name`,reply_name)
+			VALUES (#{commentText},#{essayRelationId},#{userId},#{commentId},#{headImg},#{name},#{replyName})
+	</insert>
+
+
 
 
 

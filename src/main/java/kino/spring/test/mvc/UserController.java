@@ -19,7 +19,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.alibaba.fastjson.JSON;
 
 @Controller
 @RequestMapping("/user")
@@ -206,6 +205,64 @@ public class UserController {
 		} catch (Exception e) {
 			logger.error("获取用户个人主页 个文章信息数量 报错: ",e);
 			return DataResultUtil.createDataResult(false, null, "查询用户个人主页 个文章信息数量 失败!");
+		}
+	}
+	
+	/**
+	 * 我的  获取用户个人信息 
+	 * @param phone
+	 * @return
+  	 *		"sex": 1,  1男 2女
+     *		"phone": "18683506215", 电话
+     *		"name": "大大的太阳",  昵称
+     *		"head_img": "http://banbao.chazidian.com/uploadfile/2016-01-25/s145368924044608.jpg" 头像
+	 */
+	@RequestMapping("/getUserInfo")
+	@ResponseBody
+	public DataResult getUserInfo(String phone){
+		try{
+			Map<String, Object> userInfo = userService.getUserInfo(phone);
+			return DataResultUtil.createDataResult(true, userInfo, "查询成功");
+		} catch (Exception e) {
+			logger.error("获取用户个人信息  报错: ",e);
+			return DataResultUtil.createDataResult(false, null, "获取用户个人信息  失败!");
+		}
+	}
+	
+	/**
+	 * 用户点赞
+	 * @param phone : 电话
+	 * @param essayRelationId ： 文章id
+	 * @return 1：点赞成功 2：以前点赞过
+	 */
+	public DataResult addLinkNum(String phone,int essayRelationId){
+		try{
+			int status = userService.addLinkNum(phone,essayRelationId);
+			return DataResultUtil.createDataResult(true, status, "添加成功");
+		} catch (Exception e) {
+			logger.error("用户点赞  报错: ",e);
+			return DataResultUtil.createDataResult(false, null, "用户点赞  失败!");
+		}
+	}
+	
+	/**
+	 * 添加评论
+	 * @param commentText ：评论内容
+	 * @param essayRelationId ：文章id
+	 * @param userId ：用户id
+	 * @param commentId ：评论id
+	 * @param headImg ：用户头像图片
+	 * @param name ：昵称
+	 * @param replyName ：回复对象人 昵称
+	 * @return
+	 */
+	public DataResult addComment(String commentText,String essayRelationId,String userId, String commentId,String headImg,String name, String replyName){
+		try{
+			int status = userService.addCommentInfo(commentText,essayRelationId,userId,commentId,headImg,name,replyName);
+			return DataResultUtil.createDataResult(true, status, "添加成功");
+		} catch (Exception e) {
+			logger.error("添加评论  报错: ",e);
+			return DataResultUtil.createDataResult(false, null, "添加评论  失败!");
 		}
 	}
 	

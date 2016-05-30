@@ -133,4 +133,45 @@ public interface UserMapper{
 	 * @return
 	 */
 	List<Object> getUserAddress(String phone);
+	
+	/**
+	 * 查询用户基本信息
+	 * @param phone
+	 * @return
+	 */
+	Map<String, Object> getUserInfo(String phone);
+	
+	/**
+	 * 查询用户是否赞过莫文章 
+	 * @param map [phone:12312313,essayRelationId：1]
+	 * @return
+	 */
+	int selectLikeStatus(Map<String, Object> map);
+	
+	/**
+	 * 添加用户点赞信息
+	 * @param map [phone:12312313,essayRelationId：1]
+	 * @return
+	 */
+	int addLikeInfo(Map<String, Object> map);
+	
+	/**
+	 * 文章点赞数量加1
+	 * @param essayRelationId 文章id
+	 * @return
+	 */
+	int addlikeNum(int essayRelationId);
+
+	/**
+	 * 添加品论
+	 * @param commentText ：评论内容
+	 * @param essayRelationId ：文章id
+	 * @param userId ：用户id
+	 * @param commentId ：评论id
+	 * @param headImg ：用户头像图片
+	 * @param name ：昵称
+	 * @param replyName ：回复对象人 昵称
+	 * @return
+	 */
+	int addCommentInfo (Map<String, Object> map);
 }

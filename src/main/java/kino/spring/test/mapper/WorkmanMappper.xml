@@ -63,7 +63,7 @@
 	
 	<!-- 查询帖子对应的评论 -->
 	<select id="getCommnetInfo" parameterType="int" resultType="java.util.Map">
-		SELECT c.head_img,c.comment_text,UNIX_TIMESTAMP(c.create_time) AS create_time,c.comment_id,c.name,reply_name AS replyName
+		SELECT c.head_img,c.comment_text,UNIX_TIMESTAMP(c.create_time) AS create_time,c.comment_id,c.name,reply_name AS replyName,user_id
 		FROM  `comment`  c
 		WHERE c.essay_relation_id=#{essayRelationId}
 	</select>

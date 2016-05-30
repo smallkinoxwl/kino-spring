@@ -93,4 +93,31 @@ public interface UserService {
 	 * @return
 	 */
 	public Map<String, Object> getUserInfoNum(String phone);
+	
+	/**
+	 * 查询用户基本信息
+	 * @param phone
+	 * @return
+	 */
+	public Map<String, Object> getUserInfo(String phone);
+	
+	/**
+	 * 用户点赞
+	 * @param phone
+	 * @param essayRelationId
+	 */
+	public int addLinkNum(String phone,int essayRelationId);
+	
+	/**
+	 * 添加品论
+	 * @param commentText
+	 * @param essayRelationId
+	 * @param userId
+	 * @param commentId
+	 * @param headImg
+	 * @param name
+	 * @param replyName
+	 */
+	public int addCommentInfo (String commentText,String essayRelationId,String userId, String commentId,String headImg,String name, String replyName);
+	
 }

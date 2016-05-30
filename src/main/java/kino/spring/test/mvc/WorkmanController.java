@@ -78,7 +78,8 @@ public class WorkmanController {
 	public DataResult getWorkmanDetailInfo(String phone,int essayRelationId){
 		try{
 			Map<String, Object> workmanOrUserPostInfo = workmanService.getWorkmanOrUserPostInfo(phone, essayRelationId);
-			workmanOrUserPostInfo.put("commnet", workmanService.getCommnetInfo(essayRelationId));
+//			List<Map<String, Object>> commnetInfo = workmanService.getCommnetInfo(essayRelationId);
+//			workmanOrUserPostInfo.put("commnet", commnetInfo);
 			return DataResultUtil.createDataResult(true, workmanOrUserPostInfo, "查询成功");
 		} catch (Exception e){
 			logger.error("工人帖子详情页信息发生错误: phone-"+phone+"essayRelationId-"+essayRelationId,e);

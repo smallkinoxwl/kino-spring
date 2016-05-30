@@ -114,4 +114,41 @@ public class UserServiceImpl implements UserService{
 		map.put("addressNum", addressNum);
 		return map;
 	}
+	
+	@Override
+	public Map<String, Object> getUserInfo(String phone){
+		return userMapper.getUserInfo(phone);
+	}
+	
+	@Override
+	public int addLinkNum(String phone,int essayRelationId){
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("phone", phone);
+		map.put("essayRelationId", essayRelationId);
+		int status=1;
+		int selectLikeStatus = userMapper.selectLikeStatus(map); //查询是否点赞过
+		if(selectLikeStatus==1){
+			status=2;
+		}else{
+			int addlikeNum = userMapper.addlikeNum(essayRelationId); //累加点赞数量
+			int addLikeInfo = userMapper.addLikeInfo(map); //添加点赞人记录
+		}
+		return status;
+	}
+	
+	@Override
+	public int addCommentInfo (String commentText,String essayRelationId,String userId, String commentId,String headImg,String name, String replyName){
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("commentText", commentText);
+		map.put("essayRelationId", essayRelationId);
+		map.put("userId", userId);
+		map.put("commentId", commentId);
+		map.put("headImg", headImg);
+		map.put("name", name);
+		map.put("replyName", replyName);
+		return userMapper.addCommentInfo(map);
+	}
+	
+	
+	
 }

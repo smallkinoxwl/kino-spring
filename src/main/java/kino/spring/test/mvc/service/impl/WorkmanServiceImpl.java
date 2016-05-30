@@ -75,6 +75,9 @@ public class WorkmanServiceImpl implements WorkmanService{
 		workmanInfo.put("update_time", time);
 		workmanInfo.put("imgToContent", workmanPostInfo);
 		workmanInfo.put("followNumber", workmanInfo.get("followNumber"));
+		
+		List<Map<String, Object>> commnetInfo = getCommnetInfo(essayRelationId);
+		workmanInfo.put("commnet", commnetInfo);
 		return workmanInfo;
 	}
 	
