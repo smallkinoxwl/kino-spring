@@ -70,7 +70,7 @@
 	
 	<!-- 查询工人详情 帖子列表 -->
 	<select id="getWorkmanListInfo"  parameterType="String" resultType="java.util.Map">
- 		SELECT w.`name`,w.`head_img`,er.`price`,er.`id` AS essayRelationId,er.`theme`,er.`like_number`
+ 		SELECT w.`name`,w.`head_img`,er.`price`,er.`id` AS essayRelationId,er.`theme`,er.`like_number`,w.trade
 			 ,UNIX_TIMESTAMP(IF(er.update_time !='0000-00-00 00:00:00',er.update_time,er.create_time)) AS update_time ,er.`comment_number`
 		FROM `essay_relation` er
 		JOIN workman w ON (er.`phone`=w.`phone`)
